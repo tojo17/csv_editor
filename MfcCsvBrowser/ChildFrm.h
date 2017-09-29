@@ -47,4 +47,5 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateFilePrintPreview(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
+public:
 };

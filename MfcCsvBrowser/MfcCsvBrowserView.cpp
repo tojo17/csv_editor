@@ -38,6 +38,9 @@ BEGIN_MESSAGE_MAP(CMfcCsvBrowserView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMfcCsvBrowserView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_MBUTTONDBLCLK()
+//	ON_WM_LBUTTONDBLCLK()
+ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 // CMfcCsvBrowserView construction/destruction
@@ -135,3 +138,22 @@ CMfcCsvBrowserDoc* CMfcCsvBrowserView::GetDocument() const // non-debug version 
 
 
 // CMfcCsvBrowserView message handlers
+
+
+
+//void CMfcCsvBrowserView::OnLButtonDblClk(UINT nFlags, CPoint point)
+//{
+//	// TODO: Add your message handler code here and/or call default
+//
+//	CView::OnLButtonDblClk(nFlags, point);
+//}
+
+
+void CMfcCsvBrowserView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	CString m_msg;
+	m_msg.Format(_T("Mouse: x:%d, y:%d."), point.x, point.y);
+	AfxMessageBox(m_msg);
+	CView::OnLButtonUp(nFlags, point);
+}

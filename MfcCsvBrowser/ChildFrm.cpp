@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CChildFrame::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CChildFrame::OnFilePrintPreview)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, &CChildFrame::OnUpdateFilePrintPreview)
+	ON_WM_MBUTTONUP()
 END_MESSAGE_MAP()
 
 // CChildFrame construction/destruction
@@ -96,3 +97,4 @@ void CChildFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_dockManager.IsPrintPreviewValid());
 }
+
