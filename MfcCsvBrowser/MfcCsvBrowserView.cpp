@@ -1,4 +1,4 @@
-// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
+﻿// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
 // included with the MFC C++ library software.  
@@ -19,6 +19,7 @@
 #include "MfcCsvBrowser.h"
 #endif
 
+#include "MainFrm.h"
 #include "MfcCsvBrowserDoc.h"
 #include "MfcCsvBrowserView.h"
 
@@ -41,6 +42,9 @@ BEGIN_MESSAGE_MAP(CMfcCsvBrowserView, CView)
 	ON_WM_MBUTTONDBLCLK()
 //	ON_WM_LBUTTONDBLCLK()
 ON_WM_LBUTTONUP()
+ON_COMMAND(ID_BRUSH, &CMfcCsvBrowserView::OnBrush)
+ON_WM_LBUTTONDOWN()
+ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CMfcCsvBrowserView construction/destruction
@@ -60,12 +64,14 @@ BOOL CMfcCsvBrowserView::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
+	
+
 	return CView::PreCreateWindow(cs);
 }
 
 // CMfcCsvBrowserView drawing
 
-void CMfcCsvBrowserView::OnDraw(CDC* /*pDC*/)
+void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 {
 	CMfcCsvBrowserDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -73,6 +79,19 @@ void CMfcCsvBrowserView::OnDraw(CDC* /*pDC*/)
 		return;
 
 	// TODO: add draw code for native data here
+	pDC->MoveTo(100, 100);
+	pDC->LineTo(600, 100);
+
+	CPen pp(PS_DASHDOT, 1, RGB(255, 0, 0));
+	pDC->SelectObject(pp);
+	pDC->MoveTo(100, 100);
+	pDC->LineTo(100, 600);
+
+	//OnDraw函数中重绘位图的操作：
+	CRect rect;
+	GetClientRect(&rect);
+	//pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &pBack, 0, 0, SRCCOPY);
+
 }
 
 
@@ -153,7 +172,69 @@ void CMfcCsvBrowserView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	CString m_msg;
-	m_msg.Format(_T("Mouse: x:%d, y:%d."), point.x, point.y);
-	AfxMessageBox(m_msg);
+	pressed = false;
+	/*m_msg.Format(_T("Mouse: x:%d, y:%d."), point.x, point.y);
+	AfxMessageBox(m_msg);*/
 	CView::OnLButtonUp(nFlags, point);
+}
+
+
+
+void CMfcCsvBrowserView::OnBrush()
+{
+	// TODO: Add your command handler code here
+	CDC *pDC = GetDC();
+	pDC->MoveTo(100, 100);
+	pDC->LineTo(600, 100);
+
+	CPen pp(PS_DASHDOT, 1, RGB(255, 0, 0));
+	pDC->SelectObject(pp);
+	pDC->MoveTo(100, 100);
+	pDC->LineTo(100, 600);
+}
+
+
+void CMfcCsvBrowserView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CView::OnLButtonDown(nFlags, point);
+	if (!inited){
+		pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
+		theDC = GetDC();
+		/*CRect rect;
+		GetClientRect(&rect);
+		MemDC.CreateCompatibleDC(NULL);
+		MemBitmap.CreateCompatibleBitmap(theDC, rect.Width(), rect.Height());*/
+		inited = true;
+	}
+
+	pressed = true;
+	mouseX = point.x;
+	mouseY = point.y;
+}
+
+
+void CMfcCsvBrowserView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CView::OnMouseMove(nFlags, point);
+	if (pressed) {
+		theDC = GetDC();
+		//CMainFrame* pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
+		CPen pp(PS_SOLID, 1, pMain->PenColor);
+		//pDC->SetPixel(point.x, point.y, pMain->PenColor);
+		
+		theDC->SelectObject(pp);
+		theDC->MoveTo(mouseX, mouseY);
+		theDC->LineTo(point.x, point.y);
+		mouseX = point.x;
+		mouseY = point.y;
+
+		/*CRect rect;
+		GetClientRect(&rect);
+		pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);*/
+		
+	}
 }

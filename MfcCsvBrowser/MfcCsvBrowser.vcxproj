@@ -131,13 +131,17 @@
     <ResourceCompile Include="MfcCsvBrowser.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />
+    <Image Include="res\icon1.ico" />
     <Image Include="res\info.bmp" />
     <Image Include="res\main.bmp" />
     <Image Include="res\MfcCsvBrowser.ico" />
     <Image Include="res\MfcCsvBrowserDoc.ico" />
+    <Image Include="res\paintlarge.bmp" />
+    <Image Include="res\paintsmall.bmp" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\writelarge.bmp" />

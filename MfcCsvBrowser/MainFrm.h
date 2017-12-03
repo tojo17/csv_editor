@@ -22,6 +22,7 @@ public:
 
 // Attributes
 public:
+	COLORREF PenColor = RGB(0, 0, 0);
 
 // Operations
 public:
@@ -60,6 +61,7 @@ protected:
 public:
 	afx_msg void OnViewHello();
 	afx_msg void OnHello();
+	afx_msg void OnColor();
 };
 
 

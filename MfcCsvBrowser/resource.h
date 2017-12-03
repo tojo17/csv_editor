@@ -44,6 +44,8 @@
 #define IDS_CAPTION_IMAGE_TEXT          235
 #define IDS_EDIT_MENU                   306
 #define IDR_RIBBON                      307
+#define IDB_PAINTLARGE                  314
+#define IDB_PAINTSMALL                  317
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_VIEW_HELLO                   32771
 #define ID_HELLO                        32772
@@ -60,13 +62,17 @@
 #define ID_DELETE_SFTUP                 32783
 #define ID_BUTTON12                     32784
 #define ID_DELETE_SFTLEFT               32784
+#define ID_BRUSH                        32793
+#define ID_BUTTON6                      32794
+#define ID_COLOR                        32795
+#define ID_BUTTON10                     32801
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        311
-#define _APS_NEXT_COMMAND_VALUE         32785
+#define _APS_NEXT_RESOURCE_VALUE        318
+#define _APS_NEXT_COMMAND_VALUE         32804
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

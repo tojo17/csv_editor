@@ -24,6 +24,14 @@ protected: // create from serialization only
 // Attributes
 public:
 	CMfcCsvBrowserDoc* GetDocument() const;
+	bool pressed = false;
+	int mouseX = 0;
+	int mouseY = 0;
+	CDC MemDC;
+	CBitmap MemBitmap;
+	CDC *theDC;
+	CMainFrame* pMain;
+	bool inited = false;
 
 // Operations
 public:
@@ -56,6 +64,10 @@ protected:
 public:
 //	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnColor();
+	afx_msg void OnBrush();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // debug version in MfcCsvBrowserView.cpp

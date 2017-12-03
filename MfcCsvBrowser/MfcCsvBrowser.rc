@@ -17,6 +17,24 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// Japanese (Japan) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_PAINTLARGE          BITMAP                  "res\\paintlarge.bmp"
+IDB_PAINTSMALL          BITMAP                  "res\\paintsmall.bmp"
+#endif    // Japanese (Japan) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
@@ -377,7 +395,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAINFRAME           "MFC Csv Browser"
+    IDR_MAINFRAME           "MFC CSV Browser"
     IDR_UntitledTYPE        "\nUntitled\nCSV Table\nComma-Separated Values (*.csv)\n.csv\nCSV\nComma-Separated Values"
     ID_WINDOW_MANAGER       "&Windows..."
 END

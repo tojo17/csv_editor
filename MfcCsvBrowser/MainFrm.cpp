@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CAPTION_BAR, &CMainFrame::OnUpdateViewCaptionBar)
 	ON_COMMAND(ID_TOOLS_OPTIONS, &CMainFrame::OnOptions)
 	ON_COMMAND(ID_HELLO, &CMainFrame::OnHello)
+	ON_COMMAND(ID_COLOR, &CMainFrame::OnColor)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -279,4 +280,15 @@ void CMainFrame::OnHello()
 {
 	// TODO: Add your command handler code here
 	AfxMessageBox(_T("Hello world!"));
+}
+
+
+void CMainFrame::OnColor()
+{
+	// TODO: Add your command handler code here
+	CMFCRibbonColorButton *pColor = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, m_wndRibbonBar.FindByID(ID_COLOR));
+	PenColor = pColor->GetColor();
+	/*CString msg;
+	msg.Format(_T("%d"), pColor->GetColor());
+	AfxMessageBox(msg);*/
 }
