@@ -52,7 +52,8 @@ END_MESSAGE_MAP()
 CMfcCsvBrowserView::CMfcCsvBrowserView()
 {
 	// TODO: add construction code here
-
+	m_table = new CListCtrl();
+	
 }
 
 CMfcCsvBrowserView::~CMfcCsvBrowserView()
@@ -64,7 +65,6 @@ BOOL CMfcCsvBrowserView::PreCreateWindow(CREATESTRUCT& cs)
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
 
-	
 
 	return CView::PreCreateWindow(cs);
 }
@@ -74,11 +74,37 @@ BOOL CMfcCsvBrowserView::PreCreateWindow(CREATESTRUCT& cs)
 void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 {
 	CMfcCsvBrowserDoc* pDoc = GetDocument();
+	
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
 	// TODO: add draw code for native data here
+	// table
+	if (m_table->m_hWnd == NULL) {
+		CRect ret;
+		GetClientRect(&ret);
+		m_table->Create(
+			WS_CHILD | WS_VISIBLE | WS_BORDER | LVS_REPORT | LVS_EDITLABELS,
+			ret, this, 32775);
+		m_table->InsertColumn(0, _T("id"));
+		m_table->InsertColumn(1, _T("ship"));
+		// auto width
+		for (int i = 0; i < 2; i++) {
+			m_table->SetColumnWidth(i, LVSCW_AUTOSIZE);
+			int nColumnWidth = m_table->GetColumnWidth(i);
+			m_table->SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
+			int nHeaderWidth = m_table->GetColumnWidth(i);
+			m_table->SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
+		}
+	}
+	else {
+		// resize
+		CRect ret;
+		GetClientRect(&ret);
+		m_table->MoveWindow(ret);
+	}
+	// painting
 	pDC->MoveTo(100, 100);
 	pDC->LineTo(600, 100);
 
@@ -237,4 +263,22 @@ void CMfcCsvBrowserView::OnMouseMove(UINT nFlags, CPoint point)
 		pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);*/
 		
 	}
+}
+
+
+BOOL CMfcCsvBrowserView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	return CView::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
+}
+
+
+void CMfcCsvBrowserView::OnInitialUpdate()
+{
+	CView::OnInitialUpdate();
+	
+	//EnableScrollBar(SB_BOTH, ESB_DISABLE_BOTH);
+	ShowScrollBar(SB_BOTH, FALSE);
+	// TODO: Add your specialized code here and/or call the base class
 }

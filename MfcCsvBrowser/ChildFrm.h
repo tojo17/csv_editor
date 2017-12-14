@@ -22,7 +22,7 @@ public:
 
 // Attributes
 protected:
-	CSplitterWndEx m_wndSplitter;
+	//CSplitterWndEx m_wndSplitter;
 public:
 
 // Operations
@@ -30,7 +30,7 @@ public:
 
 // Overrides
 	public:
-	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+	//virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 // Implementation

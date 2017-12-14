@@ -33,6 +33,10 @@ public:
 	CMainFrame* pMain;
 	bool inited = false;
 
+protected:
+	CListCtrl* m_table;	// main table
+
+
 // Operations
 public:
 
@@ -68,6 +72,8 @@ public:
 	afx_msg void OnBrush();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
+	virtual void OnInitialUpdate();
 };
 
 #ifndef _DEBUG  // debug version in MfcCsvBrowserView.cpp

@@ -72,6 +72,10 @@ void CMfcCsvBrowserDoc::Serialize(CArchive& ar)
 	else
 	{
 		// TODO: add loading code here
+		CString str;
+		ar >> str;
+		AfxMessageBox(str);
+
 	}
 }
 

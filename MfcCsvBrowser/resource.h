@@ -52,6 +52,7 @@
 #define ID_BUTTON3                      32773
 #define ID_FILE_ABOUT                   32774
 #define ID_EDIT_INSERT                  32775
+#define IDC_TABLE                       32775
 #define ID_EDIT_DELETE                  32776
 #define ID_EDIT_INSERT_LINE             32777
 #define ID_EDIT_INSERT_COLUMN           32778

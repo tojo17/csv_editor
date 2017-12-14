@@ -41,6 +41,21 @@ IDB_PAINTSMALL          BITMAP                  "res\\paintsmall.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+IDB_MAIN                BITMAP                  "res\\main.bmp"
+IDB_FILELARGE           BITMAP                  "res\\filelarge.bmp"
+IDB_FILESMALL           BITMAP                  "res\\filesmall.bmp"
+IDB_WRITELARGE          BITMAP                  "res\\writelarge.bmp"
+IDB_WRITESMALL          BITMAP                  "res\\writesmall.bmp"
+IDB_BUTTONS             BITMAP                  "res\\buttons.bmp"
+IDB_INFO                BITMAP                  "res\\info.bmp"
+
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -92,21 +107,6 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\MfcCsvBrowser.ico"
 IDR_UntitledTYPE        ICON                    "res\\MfcCsvBrowserDoc.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
-IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
-IDB_MAIN                BITMAP                  "res\\main.bmp"
-IDB_FILELARGE           BITMAP                  "res\\filelarge.bmp"
-IDB_FILESMALL           BITMAP                  "res\\filesmall.bmp"
-IDB_WRITELARGE          BITMAP                  "res\\writelarge.bmp"
-IDB_WRITESMALL          BITMAP                  "res\\writesmall.bmp"
-IDB_BUTTONS             BITMAP                  "res\\buttons.bmp"
-IDB_INFO                BITMAP                  "res\\info.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -544,6 +544,7 @@ END
 STRINGTABLE
 BEGIN
     ID_FILE_ABOUT           "About this editor\nAbout"
+    IDC_TABLE               "the table in main view"
     ID_EDIT_INSERT_LINE     "Insert a line after selected\nInsert Line"
     ID_EDIT_INSERT_COLUMN   "Insert a column after selected\nInsert Column"
     ID_EDIT_INSERT_ROW      "Insert a row after selected\nInsert Row"
