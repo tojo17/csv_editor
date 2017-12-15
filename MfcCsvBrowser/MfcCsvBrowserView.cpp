@@ -46,8 +46,11 @@ BEGIN_MESSAGE_MAP(CMfcCsvBrowserView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_NOTIFY(NM_DBLCLK, IDC_TABLE, &CMfcCsvBrowserView::OnClickTable)
+
 	ON_WM_LBUTTONDBLCLK()
 //	ON_MESSAGE(NMCLICK, &CMfcCsvBrowserView::OnNmclick)
+ON_COMMAND(ID_EDIT_INSERT, &CMfcCsvBrowserView::OnEditInsert)
+ON_COMMAND(ID_EDIT_DELETE, &CMfcCsvBrowserView::OnEditDelete)
 END_MESSAGE_MAP()
 
 // CMfcCsvBrowserView construction/destruction
@@ -342,3 +345,17 @@ void CMfcCsvBrowserView::OnLButtonDblClk(UINT nFlags, CPoint point)
 }
 
 
+
+
+void CMfcCsvBrowserView::OnEditInsert()
+{
+	// TODO: Add your command handler code here
+	m_table->InsertItem(m_table->GetSelectionMark(), _T(""));
+}
+
+
+void CMfcCsvBrowserView::OnEditDelete()
+{
+	// TODO: Add your command handler code here
+	m_table->DeleteItem(m_table->GetSelectionMark());
+}

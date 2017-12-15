@@ -79,6 +79,9 @@ public:
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 protected:
 //	afx_msg LRESULT OnNmclick(WPARAM wParam, LPARAM lParam);
+public:
+	afx_msg void OnEditInsert();
+	afx_msg void OnEditDelete();
 };
 
 #ifndef _DEBUG  // debug version in MfcCsvBrowserView.cpp
