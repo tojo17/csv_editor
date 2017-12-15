@@ -40,11 +40,14 @@ BEGIN_MESSAGE_MAP(CMfcCsvBrowserView, CView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 	ON_WM_MBUTTONDBLCLK()
-//	ON_WM_LBUTTONDBLCLK()
-ON_WM_LBUTTONUP()
-ON_COMMAND(ID_BRUSH, &CMfcCsvBrowserView::OnBrush)
-ON_WM_LBUTTONDOWN()
-ON_WM_MOUSEMOVE()
+	//	ON_WM_LBUTTONDBLCLK()
+	ON_WM_LBUTTONUP()
+	ON_COMMAND(ID_BRUSH, &CMfcCsvBrowserView::OnBrush)
+	ON_WM_LBUTTONDOWN()
+	ON_WM_MOUSEMOVE()
+	ON_NOTIFY(NM_DBLCLK, IDC_TABLE, &CMfcCsvBrowserView::OnClickTable)
+	ON_WM_LBUTTONDBLCLK()
+//	ON_MESSAGE(NMCLICK, &CMfcCsvBrowserView::OnNmclick)
 END_MESSAGE_MAP()
 
 // CMfcCsvBrowserView construction/destruction
@@ -53,7 +56,7 @@ CMfcCsvBrowserView::CMfcCsvBrowserView()
 {
 	// TODO: add construction code here
 	m_table = new CListCtrl();
-	
+
 }
 
 CMfcCsvBrowserView::~CMfcCsvBrowserView()
@@ -74,7 +77,7 @@ BOOL CMfcCsvBrowserView::PreCreateWindow(CREATESTRUCT& cs)
 void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 {
 	CMfcCsvBrowserDoc* pDoc = GetDocument();
-	
+
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
@@ -82,21 +85,45 @@ void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 	// TODO: add draw code for native data here
 	// table
 	if (m_table->m_hWnd == NULL) {
+		//CStatusBar *pStatusBar =
+		//	(CStatusBar *)AfxGetMainWnd()->GetDescendantWindow(ID_STATUSBAR_PANE1);
+
+		//pStatusBar->SetPaneText(0, L"Init data...");
+
 		CRect ret;
 		GetClientRect(&ret);
 		m_table->Create(
-			WS_CHILD | WS_VISIBLE | WS_BORDER | LVS_REPORT | LVS_EDITLABELS,
+			WS_CHILD | WS_VISIBLE | WS_BORDER | LVS_REPORT | LVS_SHOWSELALWAYS,
 			ret, this, 32775);
-		m_table->InsertColumn(0, _T("id"));
-		m_table->InsertColumn(1, _T("ship"));
+		m_table->SetExtendedStyle(
+			LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+		// row title
+
+		for (int i = 0; i < int(pDoc->m_data[0].size()); i++){
+			m_table->InsertColumn(i, pDoc->m_data[0][i]);
+		}
+
+		// content
+		for (int i = 1; i < int(pDoc->m_data.size()); i++){
+			m_table->InsertItem(i, pDoc->m_data[i][0]); // add line with cell 0
+			for (int ii = 1; ii < int(pDoc->m_data[i].size()); ii++){
+				//AfxMessageBox(pDoc->m_data[i][ii]);
+				m_table->SetItemText(i - 1, ii, pDoc->m_data[i][ii]);
+			}
+		}
+
+
+
 		// auto width
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < int(pDoc->m_data[0].size()); i++) {
 			m_table->SetColumnWidth(i, LVSCW_AUTOSIZE);
 			int nColumnWidth = m_table->GetColumnWidth(i);
 			m_table->SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
 			int nHeaderWidth = m_table->GetColumnWidth(i);
 			m_table->SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
 		}
+		//pStatusBar->SetPaneText(0, L"Ready.");
+
 	}
 	else {
 		// resize
@@ -105,17 +132,17 @@ void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 		m_table->MoveWindow(ret);
 	}
 	// painting
-	pDC->MoveTo(100, 100);
-	pDC->LineTo(600, 100);
+	//pDC->MoveTo(100, 100);
+	//pDC->LineTo(600, 100);
 
-	CPen pp(PS_DASHDOT, 1, RGB(255, 0, 0));
-	pDC->SelectObject(pp);
-	pDC->MoveTo(100, 100);
-	pDC->LineTo(100, 600);
+	//CPen pp(PS_DASHDOT, 1, RGB(255, 0, 0));
+	//pDC->SelectObject(pp);
+	//pDC->MoveTo(100, 100);
+	//pDC->LineTo(100, 600);
 
-	//OnDraw函数中重绘位图的操作：
-	CRect rect;
-	GetClientRect(&rect);
+	////OnDraw函数中重绘位图的操作：
+	//CRect rect;
+	//GetClientRect(&rect);
 	//pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &pBack, 0, 0, SRCCOPY);
 
 }
@@ -251,7 +278,7 @@ void CMfcCsvBrowserView::OnMouseMove(UINT nFlags, CPoint point)
 		//CMainFrame* pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
 		CPen pp(PS_SOLID, 1, pMain->PenColor);
 		//pDC->SetPixel(point.x, point.y, pMain->PenColor);
-		
+
 		theDC->SelectObject(pp);
 		theDC->MoveTo(mouseX, mouseY);
 		theDC->LineTo(point.x, point.y);
@@ -261,7 +288,7 @@ void CMfcCsvBrowserView::OnMouseMove(UINT nFlags, CPoint point)
 		/*CRect rect;
 		GetClientRect(&rect);
 		pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);*/
-		
+
 	}
 }
 
@@ -277,8 +304,41 @@ BOOL CMfcCsvBrowserView::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, D
 void CMfcCsvBrowserView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
-	
+
 	//EnableScrollBar(SB_BOTH, ESB_DISABLE_BOTH);
 	ShowScrollBar(SB_BOTH, FALSE);
 	// TODO: Add your specialized code here and/or call the base class
 }
+
+void CMfcCsvBrowserView::OnClickTable(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	CMfcCsvBrowserDoc* pDoc = GetDocument();
+
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	if (pNMListView->iItem != -1)
+	{
+		//pNMListView->iItem, pNMListView->iSubItem;
+		//AfxMessageBox(pDoc->m_data[pNMListView->iItem + 1][pNMListView->iSubItem]);
+		CellEditDlg dlg;
+		dlg.text = pDoc->m_data[pNMListView->iItem + 1][pNMListView->iSubItem];
+		dlg.DoModal();
+		if (dlg.confirmed) {
+			pDoc->m_data[pNMListView->iItem + 1][pNMListView->iSubItem] = dlg.text;
+			m_table->SetItemText(pNMListView->iItem, pNMListView->iSubItem, dlg.text);
+		}
+	}
+
+	*pResult = 0;
+}
+
+void CMfcCsvBrowserView::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CView::OnLButtonDblClk(nFlags, point);
+}
+
+

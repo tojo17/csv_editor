@@ -12,6 +12,7 @@
 // MfcCsvBrowser.h : main header file for the MfcCsvBrowser application
 //
 #pragma once
+//#define _UNICODE 
 
 #ifndef __AFXWIN_H__
 	#error "include 'stdafx.h' before including this file for PCH"

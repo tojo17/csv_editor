@@ -46,6 +46,10 @@
 #define IDR_RIBBON                      307
 #define IDB_PAINTLARGE                  314
 #define IDB_PAINTSMALL                  317
+#define IDD_DIALOG1                     319
+#define IDD_EDITCELL                    319
+#define IDCANCEL                        1000
+#define IDC_EDIT1                       1001
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_VIEW_HELLO                   32771
 #define ID_HELLO                        32772
@@ -72,9 +76,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        318
+#define _APS_NEXT_RESOURCE_VALUE        320
 #define _APS_NEXT_COMMAND_VALUE         32804
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

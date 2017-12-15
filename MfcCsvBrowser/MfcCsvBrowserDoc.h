@@ -14,7 +14,9 @@
 
 
 #pragma once
-
+#include <vector>
+#include "MainFrm.h"
+using namespace std;
 
 class CMfcCsvBrowserDoc : public CDocument
 {
@@ -24,6 +26,8 @@ protected: // create from serialization only
 
 // Attributes
 public:
+	vector<vector<CString>> m_data;
+
 
 // Operations
 public:

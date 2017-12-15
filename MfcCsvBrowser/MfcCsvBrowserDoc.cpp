@@ -1,4 +1,4 @@
-// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
+﻿// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
 // included with the MFC C++ library software.  
@@ -27,13 +27,17 @@
 #define new DEBUG_NEW
 #endif
 
+#ifndef _UNICODE
+#define _UNICODE
+#endif
+
 // CMfcCsvBrowserDoc
 
 IMPLEMENT_DYNCREATE(CMfcCsvBrowserDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CMfcCsvBrowserDoc, CDocument)
 END_MESSAGE_MAP()
-
+const int UNICODE_TXT_FLG = 0xFEFF;
 
 // CMfcCsvBrowserDoc construction/destruction
 
@@ -68,13 +72,54 @@ void CMfcCsvBrowserDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
+		AfxMessageBox(_T("Saving"));
+		CFile *file = ar.GetFile();
+		char str[204800] = { 0 };
+		CString buff;
+		//file->Write(&UNICODE_TXT_FLG, 2);
+		for (int i = 0; i < m_data.size(); i++){
+			for (int ii = 0; ii < m_data[i].size(); ii++){
+				buff += m_data[i][ii];
+				if (ii != m_data[i].size() - 1) buff += L',';
+			}
+			buff += L"\n";
+		}
+		file->Write(CW2A(buff, CP_UTF8), buff.GetLength());
+		file->Flush();
 	}
 	else
 	{
 		// TODO: add loading code here
-		CString str;
-		ar >> str;
-		AfxMessageBox(str);
+		CFile *file = ar.GetFile();
+		char str[204800] = { 0 };
+
+		if (file->GetLength() == 0){
+			AfxMessageBox(L"Empty File!");
+			return;
+		}
+
+
+		//pStatusBar->SetPaneText(0, L"Reading file...",TRUE);
+
+		CString cstr;
+		file->Read(str, 204799);
+		cstr = CA2W(str, CP_UTF8);
+		//AfxMessageBox(cstr);
+		CString line;
+		int i = 0;
+
+		while (AfxExtractSubString(line, cstr, i, _T('\n'))){
+			i++;
+			CString cell;
+			int ii = 0;
+			vector<CString> v_line;
+			while (AfxExtractSubString(cell, line, ii, _T(','))){
+				ii++;
+				v_line.push_back(cell);
+			}
+			m_data.push_back(v_line);
+		}
+		//AfxMessageBox(m_data[1][2]);
 
 	}
 }
