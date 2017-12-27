@@ -129,7 +129,7 @@ void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 		MemDC.CreateCompatibleDC(pDC);
 		MemDC.SetWindowExt(10000, 10000);
 		GetClientRect(&ret);
-		MemBitmap.CreateCompatibleBitmap(&MemDC, 10000, 10000);
+		MemBitmap.CreateCompatibleBitmap(pDC, 10000, 10000);
 		MemDC.SelectObject(&MemBitmap);
 		MemDC.FillSolidRect(0, 0, 10000, 10000, pDC->GetBkColor());
 

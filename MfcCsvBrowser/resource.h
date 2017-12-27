@@ -48,7 +48,7 @@
 #define IDB_PAINTSMALL                  317
 #define IDD_DIALOG1                     319
 #define IDD_EDITCELL                    319
-#define IDCANCEL                        1000
+#define ID_CANCEL                       1000
 #define IDC_EDIT1                       1001
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_VIEW_HELLO                   32771
