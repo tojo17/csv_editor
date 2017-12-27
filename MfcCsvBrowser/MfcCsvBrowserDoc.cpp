@@ -71,7 +71,8 @@ void CMfcCsvBrowserDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		// TODO: add storing code here
+		// storing code here
+		((CMainFrame*)AfxGetMainWnd())->UpdateStatusBar(ID_STATUSBAR_PANE1, L"Saving...");
 		CFile *file = ar.GetFile();
 		char str[204800] = { 0 };
 		CString buff;
@@ -93,11 +94,11 @@ void CMfcCsvBrowserDoc::Serialize(CArchive& ar)
 		}
 		file->Write(CW2A(buff, CP_UTF8), length);
 		file->Flush();
-		AfxMessageBox(_T("Saved."));
+		((CMainFrame*)AfxGetMainWnd())->UpdateStatusBar(ID_STATUSBAR_PANE1, L"Saved.");
 	}
 	else
 	{
-		// TODO: add loading code here
+		// loading code here
 		CFile *file = ar.GetFile();
 		char str[204800] = { 0 };
 
@@ -107,7 +108,7 @@ void CMfcCsvBrowserDoc::Serialize(CArchive& ar)
 		}
 
 
-		//pStatusBar->SetPaneText(0, L"Reading file...",TRUE);
+		((CMainFrame*)AfxGetMainWnd())->UpdateStatusBar(ID_STATUSBAR_PANE1, L"Reading data...");
 
 		CString cstr;
 		file->Read(str, 204799);

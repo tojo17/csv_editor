@@ -274,7 +274,16 @@ void CMainFrame::OnOptions()
 }
 
 
-
+void CMainFrame::UpdateStatusBar(int id, CString text){
+	CMFCRibbonStatusBarPane* pPane = (CMFCRibbonStatusBarPane*)m_wndStatusBar.FindByID(id);
+	if (pPane != NULL)
+	{
+		pPane->SetText(text);
+		
+	}
+	m_wndStatusBar.Invalidate();
+	m_wndStatusBar.UpdateWindow();
+}
 
 void CMainFrame::OnHello()
 {

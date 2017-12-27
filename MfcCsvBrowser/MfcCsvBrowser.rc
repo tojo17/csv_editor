@@ -542,8 +542,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_STATUS_PANE1        "Pane 1"
-    IDS_STATUS_PANE2        "Pane 2"
+    IDS_STATUS_PANE1        "No file opened yet."
+    IDS_STATUS_PANE2        "Selected no line."
 END
 
 STRINGTABLE

@@ -46,6 +46,7 @@ BEGIN_MESSAGE_MAP(CMfcCsvBrowserView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_NOTIFY(NM_DBLCLK, IDC_TABLE, &CMfcCsvBrowserView::OnClickTable)
+	ON_NOTIFY(NM_CLICK, IDC_TABLE, &CMfcCsvBrowserView::OnLClickTable)
 	ON_WM_LBUTTONDBLCLK()
 //	ON_MESSAGE(NMCLICK, &CMfcCsvBrowserView::OnNmclick)
 ON_COMMAND(ID_EDIT_INSERT, &CMfcCsvBrowserView::OnEditInsert)
@@ -82,14 +83,9 @@ void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
-	// TODO: add draw code for native data here
 	// table
 	if (m_table->m_hWnd == NULL) {
-		//CStatusBar *pStatusBar =
-		//	(CStatusBar *)AfxGetMainWnd()->GetDescendantWindow(ID_STATUSBAR_PANE1);
-
-		//pStatusBar->SetPaneText(0, L"Init data...");
+		((CMainFrame*)AfxGetMainWnd())->UpdateStatusBar(ID_STATUSBAR_PANE1, L"Init data...");
 
 		CRect ret;
 		GetClientRect(&ret);
@@ -123,7 +119,7 @@ void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 			int nHeaderWidth = m_table->GetColumnWidth(i);
 			m_table->SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
 		}
-		//pStatusBar->SetPaneText(0, L"Ready.");
+		((CMainFrame*)AfxGetMainWnd())->UpdateStatusBar(ID_STATUSBAR_PANE1, L"Ready");
 
 		// paint board
 		MemDC.CreateCompatibleDC(pDC);
@@ -320,8 +316,6 @@ void CMfcCsvBrowserView::OnClickTable(NMHDR* pNMHDR, LRESULT* pResult)
 	// double click to edit
 	if (pNMListView->iItem != -1)
 	{
-		//pNMListView->iItem, pNMListView->iSubItem;
-		//AfxMessageBox(pDoc->m_data[pNMListView->iItem + 1][pNMListView->iSubItem]);
 		CellEditDlg dlg;
 		dlg.text = pDoc->m_data[pNMListView->iItem + 1][pNMListView->iSubItem];
 		dlg.DoModal();
@@ -333,6 +327,27 @@ void CMfcCsvBrowserView::OnClickTable(NMHDR* pNMHDR, LRESULT* pResult)
 
 	*pResult = 0;
 }
+
+void CMfcCsvBrowserView::OnLClickTable(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	CMfcCsvBrowserDoc* pDoc = GetDocument();
+
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+
+	if (pNMListView->iItem != -1)
+	{
+		CString text;
+		text.Format(L"Line %d", pNMListView->iItem + 1);
+		((CMainFrame*)AfxGetMainWnd())->UpdateStatusBar(ID_STATUSBAR_PANE2, text);
+
+	}
+
+	*pResult = 0;
+}
+
 
 void CMfcCsvBrowserView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {

@@ -72,6 +72,7 @@ public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnColor();
 	afx_msg void OnBrush();
+	afx_msg void OnLClickTable(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnClickTable(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);

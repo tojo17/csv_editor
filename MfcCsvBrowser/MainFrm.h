@@ -26,6 +26,7 @@ public:
 
 // Operations
 public:
+	void UpdateStatusBar(int id, CString text);
 
 // Overrides
 public:
