@@ -46,7 +46,6 @@ BEGIN_MESSAGE_MAP(CMfcCsvBrowserView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_NOTIFY(NM_DBLCLK, IDC_TABLE, &CMfcCsvBrowserView::OnClickTable)
-
 	ON_WM_LBUTTONDBLCLK()
 //	ON_MESSAGE(NMCLICK, &CMfcCsvBrowserView::OnNmclick)
 ON_COMMAND(ID_EDIT_INSERT, &CMfcCsvBrowserView::OnEditInsert)
@@ -59,7 +58,6 @@ CMfcCsvBrowserView::CMfcCsvBrowserView()
 {
 	// TODO: add construction code here
 	m_table = new CListCtrl();
-
 }
 
 CMfcCsvBrowserView::~CMfcCsvBrowserView()
@@ -127,26 +125,29 @@ void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 		}
 		//pStatusBar->SetPaneText(0, L"Ready.");
 
+		// paint board
+		MemDC.CreateCompatibleDC(m_table->GetDC());
+		m_table->GetClientRect(&rect);
+		MemBitmap.CreateCompatibleBitmap(&MemDC, rect.Width(), rect.Height());
+		// MemDC.SelectObject(&MemBitmap);
+		// MemDC.SetBkMode(TRANSPARENT);
+
 	}
 	else {
-		// resize
-		CRect ret;
-		GetClientRect(&ret);
-		m_table->MoveWindow(ret);
+		if (!paint_mode){
+			// resize
+			CRect ret;
+			GetClientRect(&ret);
+			m_table->MoveWindow(ret);
+			// paint back
+			GetDC()->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
+			// new size
+			GetClientRect(&rect);
+			MemBitmap.SetBitmapDimension(rect.Width(), rect.Height());
+		}
+
+
 	}
-	// painting
-	//pDC->MoveTo(100, 100);
-	//pDC->LineTo(600, 100);
-
-	//CPen pp(PS_DASHDOT, 1, RGB(255, 0, 0));
-	//pDC->SelectObject(pp);
-	//pDC->MoveTo(100, 100);
-	//pDC->LineTo(100, 600);
-
-	////OnDraw函数中重绘位图的操作：
-	//CRect rect;
-	//GetClientRect(&rect);
-	//pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &pBack, 0, 0, SRCCOPY);
 
 }
 
@@ -227,41 +228,36 @@ CMfcCsvBrowserDoc* CMfcCsvBrowserView::GetDocument() const // non-debug version 
 void CMfcCsvBrowserView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	CString m_msg;
+
 	pressed = false;
-	/*m_msg.Format(_T("Mouse: x:%d, y:%d."), point.x, point.y);
-	AfxMessageBox(m_msg);*/
+	//CString m_msg;
+	//m_msg.Format(_T("Mouse: x:%d, y:%d."), point.x, point.y);
+	//AfxMessageBox(m_msg);
 	CView::OnLButtonUp(nFlags, point);
 }
 
 
-
 void CMfcCsvBrowserView::OnBrush()
 {
-	// TODO: Add your command handler code here
-	CDC *pDC = GetDC();
-	pDC->MoveTo(100, 100);
-	pDC->LineTo(600, 100);
-
-	CPen pp(PS_DASHDOT, 1, RGB(255, 0, 0));
-	pDC->SelectObject(pp);
-	pDC->MoveTo(100, 100);
-	pDC->LineTo(100, 600);
+	paint_mode = !paint_mode;
+	if (!paint_mode){
+		// resize
+		CRect ret;
+		GetClientRect(&ret);
+		m_table->MoveWindow(ret);
+	}
+	else {
+		m_table->MoveWindow(0, 0, 0, 0, 1);
+	}
 }
 
 
 void CMfcCsvBrowserView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: Add your message handler code here and/or call default
 
 	CView::OnLButtonDown(nFlags, point);
 	if (!inited){
 		pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
-		theDC = GetDC();
-		/*CRect rect;
-		GetClientRect(&rect);
-		MemDC.CreateCompatibleDC(NULL);
-		MemBitmap.CreateCompatibleBitmap(theDC, rect.Width(), rect.Height());*/
 		inited = true;
 	}
 
@@ -273,24 +269,20 @@ void CMfcCsvBrowserView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CMfcCsvBrowserView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	// TODO: Add your message handler code here and/or call default
 
 	CView::OnMouseMove(nFlags, point);
 	if (pressed) {
-		theDC = GetDC();
 		//CMainFrame* pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
 		CPen pp(PS_SOLID, 1, pMain->PenColor);
 		//pDC->SetPixel(point.x, point.y, pMain->PenColor);
+		CDC *pdc = GetDC();
 
-		theDC->SelectObject(pp);
-		theDC->MoveTo(mouseX, mouseY);
-		theDC->LineTo(point.x, point.y);
+		pdc->SelectObject(pp);
+		pdc->MoveTo(mouseX, mouseY);
+		pdc->LineTo(point.x, point.y);
 		mouseX = point.x;
 		mouseY = point.y;
-
-		/*CRect rect;
-		GetClientRect(&rect);
-		pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);*/
+		// m_table->GetDC()->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
 
 	}
 }
@@ -321,6 +313,8 @@ void CMfcCsvBrowserView::OnClickTable(NMHDR* pNMHDR, LRESULT* pResult)
 	if (!pDoc)
 		return;
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+
+	// double click to edit
 	if (pNMListView->iItem != -1)
 	{
 		//pNMListView->iItem, pNMListView->iSubItem;
@@ -349,13 +343,25 @@ void CMfcCsvBrowserView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 void CMfcCsvBrowserView::OnEditInsert()
 {
-	// TODO: Add your command handler code here
+	// insert a line
 	m_table->InsertItem(m_table->GetSelectionMark(), _T(""));
+
+	// update content
+	CMfcCsvBrowserDoc* pDoc = GetDocument();
+	vector<CString> new_line;
+	for (int i = 0; i < pDoc->m_data[0].size(); i++){
+		new_line.push_back(_T(""));
+	}
+	pDoc->m_data.insert((pDoc->m_data.begin() + m_table->GetSelectionMark()), new_line);
 }
 
 
 void CMfcCsvBrowserView::OnEditDelete()
 {
-	// TODO: Add your command handler code here
+	// remove a line
 	m_table->DeleteItem(m_table->GetSelectionMark());
+
+	// update content
+	CMfcCsvBrowserDoc* pDoc = GetDocument();
+	pDoc->m_data.erase(pDoc->m_data.begin() + m_table->GetSelectionMark() + 1);
 }

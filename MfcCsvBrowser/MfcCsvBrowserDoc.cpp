@@ -72,20 +72,28 @@ void CMfcCsvBrowserDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		// TODO: add storing code here
-		AfxMessageBox(_T("Saving"));
 		CFile *file = ar.GetFile();
 		char str[204800] = { 0 };
 		CString buff;
 		//file->Write(&UNICODE_TXT_FLG, 2);
+		int length = 0;
 		for (int i = 0; i < m_data.size(); i++){
 			for (int ii = 0; ii < m_data[i].size(); ii++){
 				buff += m_data[i][ii];
-				if (ii != m_data[i].size() - 1) buff += L',';
+				length += sizeof(m_data[i][ii]);
+				if (ii != m_data[i].size() - 1) {
+					buff += L',';
+					length++;
+				}
 			}
-			buff += L"\n";
+			if (i != m_data.size() - 1) {
+				buff += L"\r\n";
+				length += 2;
+			}
 		}
-		file->Write(CW2A(buff, CP_UTF8), buff.GetLength());
+		file->Write(CW2A(buff, CP_UTF8), length);
 		file->Flush();
+		AfxMessageBox(_T("Saved."));
 	}
 	else
 	{

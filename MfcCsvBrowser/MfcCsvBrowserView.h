@@ -26,11 +26,12 @@ protected: // create from serialization only
 public:
 	CMfcCsvBrowserDoc* GetDocument() const;
 	bool pressed = false;
+	bool paint_mode = false;
 	int mouseX = 0;
 	int mouseY = 0;
 	CDC MemDC;
 	CBitmap MemBitmap;
-	CDC *theDC;
+	CRect rect;
 	CMainFrame* pMain;
 	bool inited = false;
 
