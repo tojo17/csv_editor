@@ -126,24 +126,24 @@ void CMfcCsvBrowserView::OnDraw(CDC* pDC)
 		//pStatusBar->SetPaneText(0, L"Ready.");
 
 		// paint board
-		MemDC.CreateCompatibleDC(m_table->GetDC());
-		m_table->GetClientRect(&rect);
-		MemBitmap.CreateCompatibleBitmap(&MemDC, rect.Width(), rect.Height());
-		// MemDC.SelectObject(&MemBitmap);
-		// MemDC.SetBkMode(TRANSPARENT);
+		MemDC.CreateCompatibleDC(pDC);
+		MemDC.SetWindowExt(10000, 10000);
+		GetClientRect(&ret);
+		MemBitmap.CreateCompatibleBitmap(&MemDC, 10000, 10000);
+		MemDC.SelectObject(&MemBitmap);
+		MemDC.FillSolidRect(0, 0, 10000, 10000, pDC->GetBkColor());
 
 	}
 	else {
+		GetClientRect(&ret);
 		if (!paint_mode){
 			// resize
-			CRect ret;
-			GetClientRect(&ret);
 			m_table->MoveWindow(ret);
+		}
+		else {
 			// paint back
-			GetDC()->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
-			// new size
-			GetClientRect(&rect);
-			MemBitmap.SetBitmapDimension(rect.Width(), rect.Height());
+			pDC->BitBlt(0, 0, ret.Width(), ret.Height(), &MemDC, 0, 0, SRCCOPY);
+
 		}
 
 
@@ -275,14 +275,17 @@ void CMfcCsvBrowserView::OnMouseMove(UINT nFlags, CPoint point)
 		//CMainFrame* pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
 		CPen pp(PS_SOLID, 1, pMain->PenColor);
 		//pDC->SetPixel(point.x, point.y, pMain->PenColor);
-		CDC *pdc = GetDC();
+		CDC *pdc = &MemDC;
 
 		pdc->SelectObject(pp);
 		pdc->MoveTo(mouseX, mouseY);
 		pdc->LineTo(point.x, point.y);
 		mouseX = point.x;
 		mouseY = point.y;
-		// m_table->GetDC()->BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
+		CDC* map = GetDC();
+
+		map->BitBlt(0, 0, ret.Width(), ret.Height(), &MemDC, 0, 0, SRCCOPY);
+		ReleaseDC(map);
 
 	}
 }

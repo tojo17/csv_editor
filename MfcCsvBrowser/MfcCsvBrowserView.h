@@ -31,7 +31,7 @@ public:
 	int mouseY = 0;
 	CDC MemDC;
 	CBitmap MemBitmap;
-	CRect rect;
+	CRect ret;
 	CMainFrame* pMain;
 	bool inited = false;
 
